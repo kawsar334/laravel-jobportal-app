@@ -2,7 +2,7 @@
 
 @section('main')
 <section class="section-5">
-    
+
     <div class="container my-5">
         <div class="py-lg-2">&nbsp;</div>
         <div class="row d-flex justify-content-center">
@@ -34,7 +34,7 @@
                     </form>
                 </div>
                 <div class="mt-4 text-center">
-                    <p>Have an account? <a href="login.html">Login</a></p>
+                    <p>Have an account? <a href="{{route('account.login')}}">Login</a></p>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
             url: "{{route('account.registerprocess')}}",
             data: $('#registersubmit').serializeArray(),
             success: (response) => {
-                var errors = response.errors ||{};
+                var errors = response.errors || {};
                 if (response.status === false) {
                     if (errors.name) {
                         $('#name').addClass('is-invalid').siblings('p').html(errors.name).addClass('text-danger');
@@ -104,11 +104,11 @@
                     }
                 }
                 console.log(response)
-                if(response.status){
+                if (response.status) {
                     window.location.replace("{{route('account.login')}}")
                 }
             },
-            error:(err)=>{
+            error: (err) => {
                 console.log(err);
 
             }

@@ -13,7 +13,7 @@
                 <div class="card shadow border-0 p-5">
                     <h1 class="h3">Login</h1>
                     @if(session()->has('error'))
-                        <div style="color: red;">{{ session('error') }}  </div>
+                    <div style="color: red;">{{ session('error') }} </div>
                     @endif
                     <form action="{{route('account.auth')}}" method="post">
                         @csrf
@@ -38,7 +38,7 @@
                     </form>
                 </div>
                 <div class="mt-4 text-center">
-                    <p>Do not have an account? <a href="register.html">Register</a></p>
+                    <p>Do not have an account? <a href="{{route('account.register')}}">Register</a></p>
                 </div>
             </div>
         </div>
