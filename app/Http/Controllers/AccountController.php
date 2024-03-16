@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Job;
+use App\Models\JobType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -201,14 +203,82 @@ class AccountController extends Controller
 
     // create job 
 
-    public function createJob(Request $request){
-        $categories = Category::orderBy('name','asc')->where('status',1)->get();
+    public function createJob(Request $request)
+    {
+        $categories = Category::orderBy('name', 'asc')->where('status', 1)->get();
 
+        $jobstypes = JobType::orderBy('name', 'asc')->where('status', 1)->get();
 
-
-        return view('front.account.job.job',['categories'=>$categories]);
-        // return $request->all();
-
+        return view('front.account.job.job', [
+            'categories' => $categories,
+            'jobtypes' => $jobstypes
+        ]);
     }
 
+
+    public function savejob(Request $request)
+    {
+        //         token" => "k14kQWJmUnri5FKmb7vGpbxhOqEFkqUJ2BxT9JdS"
+        //   "title" => null
+        //   "category" => "Adrain Dibbert"
+        //   "vacancy" => null
+        //   "salary" => null
+        //   "location" => null
+        //   "description" => null
+        //   "benefits" => null
+        //   "responsibility" => null
+        //   "qualifications" => null
+        //   "keywords" => null
+        //   "company_name" => null
+        //   "location" => null
+        //   "website
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'category' => 'required',
+            'keywords' => 'required',
+            'company_name' => 'required',
+            'responsibility' => 'required',
+
+
+        ]);
+        if ($validator->passes()) {
+            $job = new Job();
+            $job->user_id= Auth::user()->id;
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id= $request->job_type_id;
+            $job->vacancy = $request->vacancy;
+            $job->description = $request->description;
+            $job->benefits = $request->benefits;
+            $job->responsibility = $request->responsibility;
+            $job->qualifications = $request->qualifications;
+            $job->keywords = $request->keywords;
+            $job->company_name = $request->company_name;
+            $job->location = $request->location;
+            $job->company_website = $request->website;
+
+            $job->save();
+            session()->flash('message', 'new job hasbeen added !');
+
+            return redirect()->route('account.job');
+        } else {
+           
+            session()->flash('message', 'something went wrong !');
+            return redirect()->route('account.job')->withErrors($validator);
+           
+        }
+    }
+
+    // get my jobs
+
+
+    public function myJobs(Request $request){
+
+        // $jobs = Job::where('user_id',Auth::user()->id)->get();
+        $jobs = Job::where('user_id', Auth::user()->id)->paginate(10);
+        
+        return view('front.account.job.myjobs',['jobs'=>$jobs]);
+
+    }
 }

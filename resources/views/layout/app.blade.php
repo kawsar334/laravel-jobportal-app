@@ -39,9 +39,9 @@
                     @if(!Auth::check())
                     <a class="btn btn-outline-primary me-2" href="{{route('account.login')}}" type="submit">Login</a>
                     @endif
-                   
 
-                    <a class="btn btn-primary" href="{{route('account.profile')}}" type="submit">Post a Job</a>
+
+                    <a class="btn btn-primary" href="{{route('account.job')}}" type="submit">Post a Job</a>
                 </div>
             </div>
         </nav>

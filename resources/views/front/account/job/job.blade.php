@@ -28,7 +28,8 @@
                 @endif
 
                 <!--  -->
-                <form action="" method="post" id="createjobform" name="createjobform">
+                <form action="{{route('account.savejob')}}" method="post" id="createjobform" name="createjobform">
+                    @csrf
                     <div class="card border-0 shadow mb-4 ">
                         <div class="card-body card-form p-4">
                             <h3 class="fs-4 mb-1">Job Details</h3>
@@ -36,33 +37,40 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="" class="mb-2">Title<span class="req">*</span></label>
                                     <input type="text" placeholder="Job Title" id="title" name="title" class="form-control">
+                                    @error('title')
+                                    <p class="text-danger">{{$errors->first('title')}}</p>
+
+                                    @enderror
                                 </div>
                                 <div class="col-md-6  mb-4">
                                     <label for="" class="mb-2">Category<span class="req">*</span></label>
-
                                     @if($categories->isNotEmpty())
                                     <select name="category" id="category" class="form-control">
                                         @foreach($categories as $cat)
-                                        <option value="">Select a Category</option>
-                                        <option value="">Engineering</option>
-                                        <option value="">Accountant</option>
-                                        <option value="">Information Technology</option>
-                                        <option value="">Fashion designing</option>
+                                        <option value="{{$cat->id}}">{{$cat->name}}</option>
                                         @endforeach
                                     </select>
                                     @endif
+                                    @error('category')
+                                    <p class="text-danger">{{@errors->first('category')}}</p>
+
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label for="" class="mb-2">Job Nature<span class="req">*</span></label>
-                                    <select class="form-select">
-                                        <option>Full Time</option>
-                                        <option>Part Time</option>
-                                        <option>Remote</option>
-                                        <option>Freelance</option>
+
+                                    @if($jobtypes->isNotEmpty())
+                                    <select class="form-select" name="job_type_id">
+
+                                        @foreach($jobtypes as $jobtype)
+                                        <option value="{{$jobtype->id}}">{{$jobtype->name}}</option>
+                                        @endforeach
                                     </select>
+
+                                    @endif
                                 </div>
                                 <div class="col-md-6  mb-4">
                                     <label for="" class="mb-2">Vacancy<span class="req">*</span></label>
@@ -78,7 +86,12 @@
 
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Location<span class="req">*</span></label>
-                                    <input type="text" placeholder="location" id="location" name="Location" class="form-control">
+                                    <input type="text" placeholder="location" id="location" name="location" class="form-control">
+
+                                    @error('location')
+                                    <p class="text-danger">{{$errors->first('location')}}</p>
+
+                                    @enderror
                                 </div>
                             </div>
 
@@ -93,6 +106,9 @@
                             <div class="mb-4">
                                 <label for="" class="mb-2">Responsibility</label>
                                 <textarea class="form-control" name="responsibility" id="responsibility" cols="5" rows="5" placeholder="Responsibility"></textarea>
+                                @error('responsibility')
+                                <p>{{$errors->first('responsibility')}}</p>
+                                @enderror
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Qualifications</label>
@@ -104,6 +120,10 @@
                             <div class="mb-4">
                                 <label for="" class="mb-2">Keywords<span class="req">*</span></label>
                                 <input type="text" placeholder="keywords" id="keywords" name="keywords" class="form-control">
+
+                                @error('keywords')
+                                <p class="text-danger">{{$errors->first('keywords')}}</p>
+                                @enderror
                             </div>
 
                             <h3 class="fs-4 mb-1 mt-5 border-top pt-5">Company Details</h3>
@@ -112,11 +132,10 @@
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Name<span class="req">*</span></label>
                                     <input type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control">
-                                </div>
+                                    @error('company_name')
+                                    <p class="text-danger">{{$errors->first('company_name')}}</p>
 
-                                <div class="mb-4 col-md-6">
-                                    <label for="" class="mb-2">Location</label>
-                                    <input type="text" placeholder="Location" id="location" name="location" class="form-control">
+                                    @enderror
                                 </div>
                             </div>
 
@@ -162,34 +181,33 @@
 @endsection
 
 
-@section('customjs')
-<script>
+@section(' customjs') <script>
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
         }
     });
 
-    $("#createjobform").submit(function(e) {
-        e.preventDefault();
+    // $("#createjobform").submit(function(e) {
+    //     e.preventDefault();
 
 
-        const data = new FormData(this)
-        $.ajax({
-            url: "{{route('account.updateimg')}}",
-            type: "post",
-            data: data,
-            contentType: false,
-            processData: false,
-            success: (response) => {
-                console.log(response)
-            },
-            error: (err) => {
-                console.log(err);
-            }
-        });
+    //     const data = new FormData(this)
+    //     $.ajax({
+    //         url: "{{route('account.updateimg')}}",
+    //         type: "post",
+    //         data: data,
+    //         contentType: false,
+    //         processData: false,
+    //         success: (response) => {
+    //             console.log(response)
+    //         },
+    //         error: (err) => {
+    //             console.log(err);
+    //         }
+    //     });
 
-    })
+    // })
 </script>
 
 

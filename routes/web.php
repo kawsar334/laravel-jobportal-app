@@ -42,6 +42,8 @@ Route::group(['middleware'=>'auth'],function(){
         Route::post('account/update',[AccountController::class, 'updateprofile'])->name('account.update');
         Route::post('/account/updatepic',[AccountController::class, 'updateprofilePicture'])->name('account.updateimg');
         Route::get('/account/job',[AccountController::class,'createJob'])->name('account.job');
+        Route::post('/account/savejob',[AccountController::class, 'savejob'])->name('account.savejob');
+        Route::get('/account/myJobs',[AccountController::class, 'myJobs'])->name('account.myJobs');
 });
 });
 

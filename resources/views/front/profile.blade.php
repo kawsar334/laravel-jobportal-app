@@ -64,7 +64,6 @@
                             <input type="text" name="mobile" value="{{$user->mobile}}" placeholder="Mobile" class="form-control">
                             @error('mobile')
                             <p class="text-danger">{{$errors->first('mobile')}}</p>
-
                             @enderror
                         </div>
                     </div>
