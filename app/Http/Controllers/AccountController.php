@@ -275,10 +275,66 @@ class AccountController extends Controller
 
     public function myJobs(Request $request){
 
-        // $jobs = Job::where('user_id',Auth::user()->id)->get();
         $jobs = Job::where('user_id', Auth::user()->id)->paginate(10);
         
         return view('front.account.job.myjobs',['jobs'=>$jobs]);
 
     }
+
+    // view edit job route
+    public function editjob(Request $request , $id){
+        $job = Job::find($id)->first();
+        $categories = Category::orderBy('name', 'asc')->where('status', 1)->get();
+
+        $jobstypes = JobType::orderBy('name', 'asc')->where('status', 1)->get();
+        
+        return view('front.account.job.editjob',["job"=>$job, "categories"=>$categories, "jobtypes"=>$jobstypes]);
+    }
+
+    public function updatejob (Request $request ,$id){
+
+        $validator= Validator::make($request->all(),[
+            'title' => 'required',
+            'category' => 'required',
+            'keywords' => 'required',
+            'company_name' => 'required',
+            'responsibility' => 'required',
+        ]);
+        if($validator->passes()){
+           $job = Job::find($id)->first();
+            $job->user_id = Auth::user()->id;
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id = $request->job_type_id;
+            $job->vacancy = $request->vacancy;
+            $job->description = $request->description;
+            $job->benefits = $request->benefits;
+            $job->responsibility = $request->responsibility;
+            $job->qualifications = $request->qualifications;
+            $job->keywords = $request->keywords;
+            $job->company_name = $request->company_name;
+            $job->location = $request->location;
+            $job->company_website = $request->website;
+            $job->save();
+           return redirect()->route('account.myJobs');
+        
+
+       }else{
+        session()->flash('error','something went wrong !');
+        return redirect()->route('account.editjob')->withErrors($validator);
+       }
+
+
+    }
+
+    // job details view 
+
+    public function detailsjob(Request $request, $id){
+
+        $job = Job::find($id);
+
+        return view('front.account.job.detailsjob', ["job" => $job]);
+    }
+
+
 }

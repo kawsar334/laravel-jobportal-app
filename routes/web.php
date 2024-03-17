@@ -44,6 +44,9 @@ Route::group(['middleware'=>'auth'],function(){
         Route::get('/account/job',[AccountController::class,'createJob'])->name('account.job');
         Route::post('/account/savejob',[AccountController::class, 'savejob'])->name('account.savejob');
         Route::get('/account/myJobs',[AccountController::class, 'myJobs'])->name('account.myJobs');
+        Route::get('/account/editjob/{jobid}',[AccountController::class, 'editjob'])->name('account.editjob');
+        Route::post('/account/updatejob/{id}',[AccountController::class, 'updatejob'])->name('account.updatejob');
+        Route::get('account/detailsjob/{jobid}',[AccountController::class, 'detailsjob'])->name('account.detailsjob');
 });
 });
 

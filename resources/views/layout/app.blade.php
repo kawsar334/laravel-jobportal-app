@@ -41,7 +41,12 @@
                     @endif
 
 
-                    <a class="btn btn-primary" href="{{route('account.job')}}" type="submit">Post a Job</a>
+                    @if(Auth::check())
+                    <a class="btn btn-primary mx-2" href="{{route('account.job')}}" type="submit">Post a Jobs</a>
+                    <a class="btn btn-primary" href="{{route('account.myJobs')}}" type="submit">My job</a>
+
+
+                    @endif
                 </div>
             </div>
         </nav>
